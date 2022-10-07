@@ -3,6 +3,7 @@ package br.com.clientes.controller;
 import br.com.clientes.domain.dto.CidadeDTO;
 import br.com.clientes.domain.model.Cidade;
 import br.com.clientes.service.CidadeService;
+import io.swagger.annotations.Api;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/cidade")
+@Api(tags = "Cidade")
 public class CidadeController {
 
     @Autowired

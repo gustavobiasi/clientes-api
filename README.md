@@ -1,5 +1,7 @@
 JAVA 11
 
+acessar swagger: http://localhost:[PORT]/swagger-ui/index.html
+
 Necessário criação do banco de dados postgres.
 
 spring.datasource.url=jdbc:postgresql://localhost:5432/clientes-api
