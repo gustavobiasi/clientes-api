@@ -37,7 +37,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente buscarId(Integer clienteId) {
         var cliente = clienteRepository.findById(clienteId)
-                  .orElseThrow(() -> new ClientesApiNotFoundException("Cliente não encontrado"));
+                  .orElseThrow(() -> new ClientesApiNotFoundException("Cliente não encontrado."));
 
         return Cliente.builder()
                   .id(cliente.getId())
