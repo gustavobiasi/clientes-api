@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity(name = "Cliente")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "tab_cliente")
 public class ClienteEntity {
 
     @Id
@@ -25,7 +25,7 @@ public class ClienteEntity {
     @Column(nullable = false, length = 11)
     private String cpf;
 
-    @Column(name = "data_cadastro", updatable = false)
+    @Column(name = "dta_cadastro", updatable = false)
     private LocalDate dataCadastro;
 
     @PrePersist

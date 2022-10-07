@@ -2,6 +2,7 @@ package br.com.clientes.service;
 
 import br.com.clientes.domain.dto.ClienteDTO;
 import br.com.clientes.domain.model.Cliente;
+import java.util.List;
 
 public interface ClienteService {
 
@@ -31,4 +32,11 @@ public interface ClienteService {
      * @param clienteId
      */
     void atualizarId(ClienteDTO clienteDTO, Integer clienteId);
+
+    /**
+     * Buscar todos os clientes
+     *
+     * @return
+     */
+    List<Cliente> listarClientes();
 }

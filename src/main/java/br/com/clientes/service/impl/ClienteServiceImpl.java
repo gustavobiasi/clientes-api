@@ -3,12 +3,13 @@ package br.com.clientes.service.impl;
 import br.com.clientes.domain.dto.ClienteDTO;
 import br.com.clientes.domain.entity.ClienteEntity;
 import br.com.clientes.domain.model.Cliente;
+import br.com.clientes.handler.exceptions.ClientesApiNotFoundException;
 import br.com.clientes.repository.ClienteRepository;
 import br.com.clientes.service.ClienteService;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -22,7 +23,7 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteDTO == null)
             throw new RuntimeException("Cliente é nulo");
 
-        var clienteEntity = mapperClienteDtoToClienteEntity(clienteDTO);
+        var clienteEntity = mapperClienteDTOToClienteEntity(clienteDTO);
         var clienteSalvo = clienteRepository.save(clienteEntity);
 
         return Cliente.builder()
@@ -36,7 +37,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente buscarId(Integer clienteId) {
         var cliente = clienteRepository.findById(clienteId)
-                  .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+                  .orElseThrow(() -> new ClientesApiNotFoundException("Cliente não encontrado"));
 
         return Cliente.builder()
                   .id(cliente.getId())
@@ -48,29 +49,54 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void deletarId(Integer clienteId) {
-        clienteRepository.findById(clienteId)
-                  .map(cliente -> {
-                      clienteRepository.delete(cliente);
-                      return Void.TYPE;
-                  })
-                  .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+      var cliente = clienteRepository.findById(clienteId);
+      if (!cliente.isPresent())
+        throw new ClientesApiNotFoundException("Cliente não encontrado");
+      clienteRepository.deleteById(clienteId);
     }
 
     @Override
     public void atualizarId(ClienteDTO clienteDTO, Integer clienteId) {
-        clienteRepository.findById(clienteId)
-                  .map(cliente -> {
-                      var clienteAtualizado = mapperClienteDtoToClienteEntity(clienteDTO);
-                      clienteAtualizado.setId(clienteId);
-                      return clienteRepository.save(clienteAtualizado);
-                  })
-                  .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+      var cliente = clienteRepository.findById(clienteId);
+
+      if (!cliente.isPresent())
+        throw new ClientesApiNotFoundException("Cliente não encontrado");
+
+      var clienteAtualizado = mapperClienteDTOToClienteEntity(clienteDTO);
+      clienteAtualizado.setId(cliente.get().getId());
+      clienteRepository.save(clienteAtualizado);
     }
 
-    private ClienteEntity mapperClienteDtoToClienteEntity(ClienteDTO clienteDTO) {
+  @Override
+  public List<Cliente> listarClientes() {
+    var listaClientes =
+        clienteRepository.findAll()
+            .stream()
+            .map(pessoa -> {
+              System.out.println("teste");
+              return this.mapperClienteEntityToCliente(pessoa);
+            })
+            .collect(Collectors.toList());
+
+    if (listaClientes.isEmpty())
+      throw new ClientesApiNotFoundException("Nenhum cliente encontrado");
+
+    return listaClientes;
+  }
+
+  private ClienteEntity mapperClienteDTOToClienteEntity(ClienteDTO clienteDTO) {
         return ClienteEntity.builder()
                   .nome(clienteDTO.getNome())
                   .cpf(clienteDTO.getCpf())
                   .build();
     }
+
+  private Cliente mapperClienteEntityToCliente(ClienteEntity clienteEntity) {
+    return Cliente.builder()
+        .id(clienteEntity.getId())
+        .nome(clienteEntity.getNome())
+        .cpf(clienteEntity.getCpf())
+        .dataCadastro(clienteEntity.getDataCadastro())
+        .build();
+  }
 }
