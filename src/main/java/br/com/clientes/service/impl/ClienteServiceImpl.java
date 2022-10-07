@@ -6,10 +6,11 @@ import br.com.clientes.domain.model.Cliente;
 import br.com.clientes.handler.exceptions.ClientesApiNotFoundException;
 import br.com.clientes.repository.ClienteRepository;
 import br.com.clientes.service.ClienteService;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {

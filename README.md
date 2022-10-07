@@ -15,3 +15,10 @@ cpf TEXT,
 dta_cadastro TIMESTAMP WITHOUT TIME ZONE,
 CONSTRAINT tab_cliente_pkey PRIMARY KEY(id)
 );
+
+CREATE TABLE public.tab_cidade ( 
+id BIGSERIAL, 
+cidade TEXT, 
+dta_cadastro TIMESTAMP WITHOUT TIME ZONE, 
+CONSTRAINT tab_cidade_pkey PRIMARY KEY(id) 
+);
