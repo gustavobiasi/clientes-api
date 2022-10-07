@@ -16,6 +16,6 @@ import static br.com.clientes.messages.Errors.REQUIRED_CIDADE;
 public class CidadeDTO {
 
     @NotBlank(message = REQUIRED_CIDADE)
-    private String nome;
+    private String cidade;
 
 }

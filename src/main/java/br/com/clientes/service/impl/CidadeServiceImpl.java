@@ -19,7 +19,7 @@ public class CidadeServiceImpl implements CidadeService {
     private CidadeRepository cidadeRepository;
 
     @Override
-    public Cidade salvar(cidadeDTO cidadeDTO) {
+    public Cidade salvar(CidadeDTO cidadeDTO) {
 
         if (cidadeDTO == null)
             throw new RuntimeException("Cidade é nulo");
@@ -37,12 +37,11 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public Cidade buscarId(Integer cidadeId) {
         var cidade = cidadeRepository.findById(cidadeId)
-                .orElseThrow(() -> new CidadesApiNotFoundException("Cidade não encontrado."));
+                .orElseThrow(() -> new CidadesApiNotFoundException("Cidade não encontrada."));
 
         return Cidade.builder()
                 .id(cidade.getId())
-                .nome(cidade.getNome())
-                .cpf(cidade.getCpf())
+                .cidade(cidade.getCidade())
                 .dataCadastro(cidade.getDataCadastro())
                 .build();
     }
@@ -51,7 +50,7 @@ public class CidadeServiceImpl implements CidadeService {
     public void deletarId(Integer cidadeId) {
         var cidade = cidadeRepository.findById(cidadeId);
         if (!cidade.isPresent())
-            throw new CidadesApiNotFoundException("Cidade não encontrado");
+            throw new CidadesApiNotFoundException("Cidade não encontrada");
         cidadeRepository.deleteById(cidadeId);
     }
 
@@ -60,7 +59,7 @@ public class CidadeServiceImpl implements CidadeService {
         var cidade = cidadeRepository.findById(cidadeId);
 
         if (!cidade.isPresent())
-            throw new CidadesApiNotFoundException("Cidade não encontrado");
+            throw new CidadesApiNotFoundException("Cidade não encontrada");
 
         var cidadeAtualizado = mapperCidadeDTOToCidadeEntity(cidadeDTO);
         cidadeAtualizado.setId(cidade.get().getId());
@@ -79,14 +78,14 @@ public class CidadeServiceImpl implements CidadeService {
                         .collect(Collectors.toList());
 
         if (listaCidades.isEmpty())
-            throw new CidadesApiNotFoundException("Nenhum cidade encontrado");
+            throw new CidadesApiNotFoundException("Nenhuma cidade encontrada");
 
         return listaCidades;
     }
 
     private CidadeEntity mapperCidadeDTOToCidadeEntity(CidadeDTO cidadeDTO) {
         return CidadeEntity.builder()
-                .cidade(cidadeDTO.getNome())
+                .cidade(cidadeDTO.getCidade())
                 .build();
     }
 

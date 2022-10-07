@@ -31,5 +31,29 @@ public class CidadeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultado);
     }
 
+    @GetMapping("/{cidadeId}")
+    public ResponseEntity<Cidade> buscarId(@PathVariable(name = "cidadeId") Integer cidadeId) {
+        var resultado = cidadeService.buscarId(cidadeId);
+        return ResponseEntity.status(HttpStatus.OK).body(resultado);
+    }
+
+    @DeleteMapping("/{cidadeId}")
+    public ResponseEntity<Cidade> deletarId(@PathVariable(name = "cidadeId") Integer cidadeId) {
+        cidadeService.deletarId(cidadeId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/{cidadeId}")
+    public ResponseEntity<Cidade> atualizarId(@Valid @RequestBody CidadeDTO cidadeDTO,
+                                               @PathVariable(name = "cidadeId") Integer cidadeId) {
+        cidadeService.atualizarId(cidadeDTO, cidadeId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<Cidade>> listarCidades() {
+        var lista = cidadeService.listarCidades();
+        return ResponseEntity.status(HttpStatus.OK).body(lista);
+    }
 
 }
