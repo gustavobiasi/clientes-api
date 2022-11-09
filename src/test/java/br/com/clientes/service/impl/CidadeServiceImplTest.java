@@ -1,6 +1,7 @@
 package br.com.clientes.service.impl;
 
 import br.com.clientes.domain.dto.CidadeDTO;
+import br.com.clientes.handler.exceptions.CidadesApiNotFoundException;
 import br.com.clientes.handler.exceptions.ClienteApiException;
 import br.com.clientes.repository.CidadeRepository;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static fixture.CidadeEntityFixture.buildCidadeEntity;
 import static org.junit.Assert.assertEquals;
@@ -29,7 +31,8 @@ public class CidadeServiceImplTest {
 
   @Test
   public void test_salvar_CidadeDTO_Null_ClienteApiException() {
-    assertThrows(ClienteApiException.class, () -> cidadeServiceImpl.salvar(null));
+    assertThrows(ClienteApiException.class,
+              () -> cidadeServiceImpl.salvar(null));
   }
 
   @Test
@@ -42,6 +45,15 @@ public class CidadeServiceImplTest {
     assertEquals(Integer.valueOf(1), result.getId());
     assertEquals("Uberlandia", result.getCidade());
     assertEquals(LocalDate.now(), result.getDataCadastro());
+  }
+
+  @Test
+  public void test_buscarId_CidadeDTO_NotFound_CidadesApiNotFoundException() {
+    when(cidadeRepository.findById(any()))
+              .thenReturn(Optional.empty());
+
+    assertThrows(CidadesApiNotFoundException.class,
+              () -> cidadeServiceImpl.buscarId(1));
   }
 
 
