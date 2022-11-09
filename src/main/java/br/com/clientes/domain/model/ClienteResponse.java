@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Cliente {
+public class ClienteResponse {
 
     @Schema(description = CLIENTE_ID)
     private Integer id;

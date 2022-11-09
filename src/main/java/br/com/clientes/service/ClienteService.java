@@ -1,24 +1,24 @@
 package br.com.clientes.service;
 
 import br.com.clientes.domain.dto.ClienteDTO;
-import br.com.clientes.domain.model.Cliente;
+import br.com.clientes.domain.dto.ClienteRequest;
+import br.com.clientes.domain.model.ClienteResponse;
 import java.util.List;
 
 public interface ClienteService {
 
     /**
-     * Salvar cliente
-     *
+     * Salvar
      * @param clienteDTO
      * @return
      */
-    Cliente salvar(ClienteDTO clienteDTO);
+    ClienteResponse salvar(ClienteDTO clienteDTO);
 
     /**
      * Buscar cliente por ID
      * @param clienteId
      */
-    Cliente buscarId(Integer clienteId);
+    ClienteResponse buscarId(Integer clienteId);
 
     /**
      * Deletar cliente por ID
@@ -28,15 +28,15 @@ public interface ClienteService {
 
     /**
      * Atualizar cliente por ID
-     * @param clienteDTO
+     * @param clienteRequest
      * @param clienteId
      */
-    void atualizarId(ClienteDTO clienteDTO, Integer clienteId);
+    void atualizarId(ClienteRequest clienteRequest, Integer clienteId);
 
     /**
      * Buscar todos os clientes
      *
      * @return
      */
-    List<Cliente> listarClientes();
+    List<ClienteResponse> listarClientes();
 }

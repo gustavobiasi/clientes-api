@@ -4,6 +4,7 @@ import br.com.clientes.domain.dto.CidadeDTO;
 import br.com.clientes.domain.entity.CidadeEntity;
 import br.com.clientes.domain.model.Cidade;
 import br.com.clientes.handler.exceptions.CidadesApiNotFoundException;
+import br.com.clientes.handler.exceptions.ClienteApiException;
 import br.com.clientes.repository.CidadeRepository;
 import br.com.clientes.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CidadeServiceImpl implements CidadeService {
     public Cidade salvar(CidadeDTO cidadeDTO) {
 
         if (cidadeDTO == null)
-            throw new RuntimeException("Cidade é nulo");
+            throw new ClienteApiException("Cidade é nulo");
 
         var cidadeEntity = mapperCidadeDTOToCidadeEntity(cidadeDTO);
         var cidadeSalvo = cidadeRepository.save(cidadeEntity);

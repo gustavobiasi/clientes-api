@@ -1,5 +1,6 @@
 package br.com.clientes.handler;
 
+import br.com.clientes.handler.exceptions.ClienteApiException;
 import br.com.clientes.handler.exceptions.ClientesApiNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,14 @@ public class HandlerException {
         msg.setCode(HttpStatus.NOT_FOUND.value());
         msg.setDetails(List.of(ex.getMessage()));
         return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ClienteApiException.class)
+    public ResponseEntity<?> handleClienteApiException(ClienteApiException ex) {
+        final ApiErrors msg = new ApiErrors();
+        msg.setCode(HttpStatus.BAD_REQUEST.value());
+        msg.setDetails(List.of(ex.getMessage()));
+        return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -25,6 +25,8 @@ public class ClienteEntity {
     @Column(nullable = false, length = 11)
     private String cpf;
 
+    private String endereco;
+
     @Column(name = "dta_cadastro", updatable = false)
     private LocalDate dataCadastro;
 

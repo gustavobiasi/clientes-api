@@ -23,7 +23,8 @@ public interface CidadeService {
 
     /**
      * Deletar cidade por ID
-     * @param cidadeId
+     *
+     * @param clienteId
      */
     void deletarId(Integer clienteId);
 
